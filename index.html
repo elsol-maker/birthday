@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Themi ❤️</title>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --bg: #0b090a;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #loading-screen {
+            width: 100%;
+            transition: opacity 1s ease;
+        }
+
+        .loader {
+            width: 200px;
+            height: 2px;
+            background: #333;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            transition: width 0.1s linear;
+        }
+
+        #message-screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
+        }
+
+        .sub-text {
+            font-size: 1.2rem;
+            color: #adb5bd;
+            letter-spacing: 1px;
+        }
+
+        .age {
+            font-size: 5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+
+        /* Heart Animation */
+        .heart-icon {
+            color: var(--primary);
+            font-size: 30px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <p class="sub-text">Establishing Secure Connection...</p>
+        <div class="loader"><div class="progress" id="bar"></div></div>
+        <p id="status" style="font-size: 0.8rem; color: #666;">Distance: Calibrating...</p>
+    </div>
+
+    <div id="message-screen">
+        <div class="heart-icon">❤</div>
+        <h1 id="main-wish">Χρόνια Πολλά Θέμη!</h1>
+        <div class="age">20</div>
+        <p class="sub-text">Μου λείπεις πολύ...</p>
+        <p class="sub-text" style="color: var(--primary); margin-top: 20px;">Χαρούμενα 20 και σ' αγαπώ!</p>
+    </div>
+
+    <script>
+        const bar = document.getElementById('bar');
+        const loadingScreen = document.getElementById('loading-screen');
+        const messageScreen = document.getElementById('message-screen');
+        const status = document.getElementById('status');
+        
+        let width = 0;
+        
+        // Simulating the "Digital Connection"
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                showMessage();
+            } else {
+                width++;
+                bar.style.width = width + '%';
+                if(width === 30) status.innerText = "Syncing Python modules...";
+                if(width === 60) status.innerText = "Bridging the distance...";
+                if(width === 90) status.innerText = "Signal Strong.";
+            }
+        }, 50);
+
+        function showMessage() {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                messageScreen.style.display = 'block';
+                setTimeout(() => {
+                    messageScreen.style.opacity = '1';
+                }, 100);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
