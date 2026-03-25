@@ -3,137 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Themi ❤️</title>
+    <title>Για τον Θέμη ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         :root {
-            --primary: #ff4d6d;
-            --bg: #0b090a;
+            --paper: #fff9f0;
+            --envelope: #ff85a1;
+            --envelope-dark: #ff5c8d;
+            --heart: #ff4d6d;
         }
 
         body {
             margin: 0;
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background-color: #ffe5ec;
+            font-family: 'Inter', sans-serif;
             overflow: hidden;
+        }
+
+        /* The Envelope Container */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: var(--envelope);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* The Flap */
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--envelope-dark);
+            transform-origin: top;
+            transition: transform 0.5s 0.3s;
+            z-index: 3;
+        }
+
+        /* The Letter inside */
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 180px;
+            background: var(--paper);
+            padding: 20px;
+            box-sizing: border-box;
+            transition: transform 0.6s, height 0.6s;
+            z-index: 2;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
 
-        #loading-screen {
-            width: 100%;
-            transition: opacity 1s ease;
+        .letter h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--heart);
+            font-size: 1.6rem;
+            margin: 0;
         }
 
-        .loader {
-            width: 200px;
-            height: 2px;
-            background: #333;
-            margin: 20px auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress {
-            width: 0%;
-            height: 100%;
-            background: var(--primary);
-            box-shadow: 0 0 15px var(--primary);
-            transition: width 0.1s linear;
-        }
-
-        #message-screen {
-            display: none;
-            opacity: 0;
-            transition: opacity 2s ease;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
-        }
-
-        .sub-text {
-            font-size: 1.2rem;
-            color: #adb5bd;
-            letter-spacing: 1px;
-        }
-
-        .age {
-            font-size: 5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff4d6d, #ff758f);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .letter p {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.4;
             margin: 10px 0;
         }
 
-        /* Heart Animation */
-        .heart-icon {
-            color: var(--primary);
-            font-size: 30px;
-            animation: pulse 1.5s infinite;
+        /* Animation when opened */
+        .envelope-wrapper.open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 1;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .envelope-wrapper.open .letter {
+            transform: translate(-50%, -120px);
+            height: 250px;
+            z-index: 4;
+        }
+
+        /* Kiss Button */
+        #kiss-btn {
+            display: none;
+            margin-top: 15px;
+            background: var(--heart);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Floating Kiss Emoji */
+        .kiss-emoji {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 999;
+            animation: flyUp 1.5s ease-out forwards;
+        }
+
+        @keyframes flyUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-300px) scale(2); opacity: 0; }
+        }
+
+        .instruction {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            color: var(--envelope-dark);
+            font-weight: bold;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen">
-        <p class="sub-text">Establishing Secure Connection...</p>
-        <div class="loader"><div class="progress" id="bar"></div></div>
-        <p id="status" style="font-size: 0.8rem; color: #666;">Distance: Calibrating...</p>
-    </div>
-
-    <div id="message-screen">
-        <div class="heart-icon">❤</div>
-        <h1 id="main-wish">Χρόνια Πολλά Θέμη!</h1>
-        <div class="age">20</div>
-        <p class="sub-text">Μου λείπεις πολύ...</p>
-        <p class="sub-text" style="color: var(--primary); margin-top: 20px;">Χαρούμενα 20 και σ' αγαπώ!</p>
+    <div class="envelope-wrapper" id="envelope-wrapper" onclick="openLetter()">
+        <div class="envelope"></div>
+        <div class="letter" id="letter">
+            <h2>Χρόνια Πολλά Θέμη!</h2>
+            <p>Μου λείπεις πολύ, χαρούμενα 20 και σ' αγαπώ ❤️</p>
+            <button id="kiss-btn" onclick="sendKiss(event)">click για φιλάκι</button>
+        </div>
+        <div class="instruction" id="instruct">Πάτα το γράμμα...</div>
     </div>
 
     <script>
-        const bar = document.getElementById('bar');
-        const loadingScreen = document.getElementById('loading-screen');
-        const messageScreen = document.getElementById('message-screen');
-        const status = document.getElementById('status');
-        
-        let width = 0;
-        
-        // Simulating the "Digital Connection"
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
-                showMessage();
-            } else {
-                width++;
-                bar.style.width = width + '%';
-                if(width === 30) status.innerText = "Syncing Python modules...";
-                if(width === 60) status.innerText = "Bridging the distance...";
-                if(width === 90) status.innerText = "Signal Strong.";
-            }
-        }, 50);
+        function openLetter() {
+            const wrapper = document.getElementById('envelope-wrapper');
+            const instruct = document.getElementById('instruct');
+            const kissBtn = document.getElementById('kiss-btn');
 
-        function showMessage() {
-            loadingScreen.style.opacity = '0';
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-                messageScreen.style.display = 'block';
+            if (!wrapper.classList.contains('open')) {
+                wrapper.classList.add('open');
+                instruct.style.display = 'none';
+                
+                // 1. Trigger Heart Confetti
+                setTimeout(fireHearts, 600);
+                
+                // 2. Show Kiss Button after letter is up
                 setTimeout(() => {
-                    messageScreen.style.opacity = '1';
-                }, 100);
-            }, 1000);
+                    kissBtn.style.display = 'block';
+                }, 1000);
+            }
+        }
+
+        function fireHearts() {
+            const count = 100;
+            const defaults = {
+                origin: { y: 0.7 },
+                shapes: ['heart'],
+                colors: ['#ff4d6d', '#ff85a1', '#ffb3c1']
+            };
+
+            function fire(particleRatio, opts) {
+                confetti({
+                    ...defaults,
+                    ...opts,
+                    particleCount: Math.floor(count * particleRatio)
+                });
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+
+        function sendKiss(e) {
+            e.stopPropagation(); // Prevents clicking the letter again
+            
+            // Create kiss emoji at click position
+            const kiss = document.createElement('div');
+            kiss.className = 'kiss-emoji';
+            kiss.innerText = '💋';
+            kiss.style.left = (e.clientX - 20) + 'px';
+            kiss.style.top = (e.clientY - 20) + 'px';
+            
+            document.body.appendChild(kiss);
+            
+            // Remove after animation
+            setTimeout(() => kiss.remove(), 1500);
+
+            // Also fire a small burst of red confetti
+            confetti({
+                particleCount: 40,
+                spread: 70,
+                origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight },
+                colors: ['#ff4d6d']
+            });
         }
     </script>
 </body>
