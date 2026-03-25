@@ -3,284 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Για τον Θέμη</title>
+    <title>Για τον Θέμη ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
-            --accent: #ffb3c1;
-            --text: #ffffff;
-            --glass: rgba(255, 255, 255, 0.1);
+            --dark-red: #6a040f; /* Deep, rich dark red */
+            --beige-dark: #d4b483;
+            --beige-light: #eaddcf;
+            --beige-paper: #f5f5dc;
+            --black-ink: #111111;
         }
 
-        body, html {
+        body {
             margin: 0;
-            padding: 0;
-            height: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f0c29; /* Deep midnight gradient */
-            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-red);
+            font-family: 'Montserrat', sans-serif;
             overflow: hidden;
         }
 
-        /* Animated Bokeh Background */
-        .bokeh {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+        /* --- ENVELOPE STRUCTURE --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 450px;
+            height: 300px;
         }
 
-        /* The Envelope Style */
-        .card-container {
-            position: relative;
+        .envelope-back {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--beige-dark);
+            border-radius: 5px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .top-left-text {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--black-ink);
             z-index: 10;
-            perspective: 1000px;
-            cursor: pointer;
         }
 
-        .envelope {
-            width: 320px;
-            height: 220px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+        /* --- THE CARD INSIDE --- */
+        .card {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 410px;
+            height: 270px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 2;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card.slide-up {
+            transform: translate(-50%, -160px);
+            z-index: 4;
+        }
+
+        .card h1 {
+            color: var(--dark-red);
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0 0 25px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card-btn {
+            background-color: var(--dark-red);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .card-btn:hover {
+            transform: scale(1.05);
+            background-color: #8b0a1a;
+        }
+
+        /* --- ENVELOPE FRONT FLAPS --- */
+        .envelope-front {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 225px solid var(--beige-light);
+            border-right: 225px solid var(--beige-light);
+            border-bottom: 150px solid var(--beige-light);
+            border-top: 150px solid transparent;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Top triangle flap */
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 225px solid transparent;
+            border-right: 225px solid transparent;
+            border-top: 160px solid var(--beige-dark);
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .envelope-flap.open {
+            transform: rotateX(180deg);
+            z-index: 1; 
+        }
+
+        /* --- THE BINARY HEART SEAL --- */
+        .seal-container {
+            position: absolute;
+            bottom: -30px; /* Positions it at the tip of the flap */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 6;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            pointer-events: auto;
+        }
+
+        /* Masking raw text to form a perfect heart shape */
+        .binary-heart {
+            width: 70px;
+            height: 70px;
+            background-color: transparent;
+            color: var(--dark-red); /* Same color as background */
+            font-size: 8px;
+            line-height: 7px;
+            font-weight: bold;
+            font-family: monospace;
+            overflow: hidden;
+            word-wrap: break-word;
+            text-align: center;
+            /* Heart SVG Mask */
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            -webkit-mask-size: cover;
+            -webkit-mask-position: center;
+        }
+
+        .instruction {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--black-ink);
+            font-weight: 600;
+            background: rgba(255,255,255,0.4);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* --- THE LETTER MODAL (BEIGE PAPER) --- */
+        .letter-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: fadeIn 0.4s;
         }
 
-        .envelope:hover {
-            transform: translateY(-10px) rotateX(10deg);
-            border-color: var(--accent);
-        }
-
-        .heart-seal {
-            font-size: 50px;
-            filter: drop-shadow(0 0 10px var(--accent));
-            animation: breathe 2s infinite ease-in-out;
-        }
-
-        /* The actual Letter */
-        .letter {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 340px;
-            padding: 40px 30px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(25px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-            color: white;
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-        }
-
-        .letter.active {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .message {
-            font-weight: 300;
-            line-height: 1.6;
-            letter-spacing: 0.5px;
-            margin-bottom: 30px;
-            color: rgba(255,255,255,0.9);
-        }
-
-        /* Kiss Button */
-        #kiss-btn {
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-family: 'Inter', sans-serif;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .paper-content {
+            background-color: var(--beige-paper);
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow-y: auto;
             position: relative;
-            overflow: hidden;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            line-height: 1.6;
+            color: var(--black-ink);
         }
 
-        #kiss-btn:hover {
-            background: var(--accent);
-            color: #000;
-            box-shadow: 0 0 20px var(--accent);
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #555;
+            font-weight: bold;
         }
 
-        /* Animations */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        .kiss-particle {
+        /* --- FLOATING KISSES --- */
+        .kiss-emoji {
             position: fixed;
+            font-size: 3rem;
             pointer-events: none;
-            z-index: 100;
-            font-size: 2rem;
-            animation: kissAnimation 1.2s ease-out forwards;
+            z-index: 999;
+            animation: floatKiss 2s ease-out forwards;
         }
 
-        @keyframes kissAnimation {
-            0% { transform: scale(0) rotate(0deg); opacity: 1; }
-            50% { transform: scale(1.5) rotate(20deg); opacity: 1; }
-            100% { transform: translateY(-200px) scale(2) rotate(-20deg); opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        @keyframes floatKiss {
+            0% { transform: scale(0.5) translateY(0); opacity: 1; }
+            50% { transform: scale(1.5) translateY(-50px); opacity: 1; }
+            100% { transform: scale(2) translateY(-150px); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <canvas class="bokeh" id="bokehCanvas"></canvas>
-
-    <div class="card-container" id="cardContainer" onclick="openMessage()">
-        <div class="envelope" id="envelope">
-            <div class="heart-seal">✉️</div>
-        </div>
+    <div class="envelope-wrapper">
+        <div class="envelope-back"></div>
+        <div class="top-left-text">Για τον Θέμη</div>
         
-        <div class="letter" id="letter">
-            <h1>Χρόνια Πολλά Θέμη!</h1>
-            <p class="message">
-                Μου λείπεις πολύ, <br>
-                χαρούμενα 20 και σ' αγαπώ ❤️
-            </p>
-            <button id="kiss-btn" onclick="spawnKiss(event)">click για φιλάκι</button>
+        <div class="card" id="birthday-card">
+            <h1>ΧΡΟΝΙΑ ΠΟΛΛΑ ΘΕΜΗ</h1>
+            <p>Σου εύχομαι να περάσεις πολύ όμορφα τα γενέθλια σου, σ'αγαπω και μου λείπεις πάρα πολύ.</p>
+            <div class="button-group">
+                <button class="card-btn" onclick="openLetter()">read your letter (when you are ready)</button>
+                <button class="card-btn" onclick="spawnKiss()">click for a kiss</button>
+            </div>
+        </div>
+
+        <div class="envelope-front"></div>
+        
+        <div class="envelope-flap" id="flap">
+            <div class="seal-container" id="seal" onclick="openEnvelope()">
+                <div class="binary-heart" id="binary-heart"></div>
+                <div class="instruction">click the heart to open the letter</div>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Bokeh Background Animation
-        const canvas = document.getElementById('bokehCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 100 + 50;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.color = `rgba(255, 179, 193, ${Math.random() * 0.05})`;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y > canvas.height) this.y = 0;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < 20; i++) particles.push(new Particle());
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-        animate();
-
-        // Interaction Logic
-        function openMessage() {
-            const envelope = document.getElementById('envelope');
-            const letter = document.getElementById('letter');
+    <div class="letter-modal" id="letter-modal">
+        <div class="paper-content">
+            <span class="close-btn" onclick="closeLetter()">×</span>
             
-            if (!letter.classList.contains('active')) {
-                envelope.style.transform = "scale(0.8) translateY(100px)";
-                envelope.style.opacity = "0";
-                
-                setTimeout(() => {
-                    envelope.style.display = "none";
-                    letter.classList.add('active');
-                    triggerConfetti();
-                }, 400);
+            Αγαπημένε μου Θέμη,<br><br>
+            
+            Εδώ γράφεις όλο το μακροσκελές μήνυμα που θέλεις να του πεις. 
+            Μπορείς να προσθέσεις όσες παραγράφους θέλεις.<br><br>
+            
+            Σ' αγαπώ πολύ!
+            
+            </div>
+    </div>
+
+    <script>
+        // Fill the heart with 010101s dynamically so we have enough text
+        const heartEl = document.getElementById('binary-heart');
+        heartEl.innerText = "01".repeat(500); // 1000 binary numbers packed tightly
+
+        function openEnvelope() {
+            const flap = document.getElementById('flap');
+            const seal = document.getElementById('seal');
+            const card = document.getElementById('birthday-card');
+
+            // 1. Hide the heart and text
+            seal.style.opacity = '0';
+            setTimeout(() => seal.style.display = 'none', 300);
+
+            // 2. Open the flap
+            flap.classList.add('open');
+
+            // 3. Slide the card up and pop confetti
+            setTimeout(() => {
+                card.classList.add('slide-up');
+                fireConfetti();
+            }, 500);
+        }
+
+        function fireConfetti() {
+            const count = 200;
+            const defaults = { origin: { y: 0.6 }, shapes: ['heart'], colors: ['#6a040f', '#ff4d6d', '#ffffff'] };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
             }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
         }
 
-        function triggerConfetti() {
-            const duration = 3 * 1000;
-            const end = Date.now() + duration;
-
-            (function frame() {
-                confetti({
-                    particleCount: 2,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#ffb3c1', '#ff4d6d']
-                });
-                confetti({
-                    particleCount: 2,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#ffb3c1', '#ff4d6d']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-        }
-
-        function spawnKiss(e) {
-            e.stopPropagation();
+        function spawnKiss() {
+            // Create a kiss emoji
             const kiss = document.createElement('div');
-            kiss.className = 'kiss-particle';
+            kiss.className = 'kiss-emoji';
             kiss.innerText = '💋';
-            kiss.style.left = e.clientX + 'px';
-            kiss.style.top = e.clientY + 'px';
+            
+            // Generate completely random X and Y coordinates across the whole screen
+            const randomX = Math.random() * (window.innerWidth - 50); // -50 so it doesn't go off-screen
+            const randomY = Math.random() * (window.innerHeight - 50);
+            
+            kiss.style.left = randomX + 'px';
+            kiss.style.top = randomY + 'px';
+            
             document.body.appendChild(kiss);
 
-            // Small haptic-style confetti burst
-            confetti({
-                particleCount: 15,
-                scalar: 0.7,
-                angle: 90,
-                spread: 50,
-                origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight },
-                colors: ['#ff4d6d']
-            });
+            // Remove it from the HTML after the animation finishes so it doesn't lag his phone/computer
+            setTimeout(() => kiss.remove(), 2000);
+        }
 
-            setTimeout(() => kiss.remove(), 1200);
+        function openLetter() {
+            document.getElementById('letter-modal').style.display = 'flex';
+        }
+
+        function closeLetter() {
+            document.getElementById('letter-modal').style.display = 'none';
         }
     </script>
 </body>
