@@ -4,16 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Για τον Θέμη ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
-            --dark-red: #6a040f; /* Deep, rich dark red */
-            --beige-dark: #d4b483;
-            --beige-light: #eaddcf;
-            --beige-paper: #f5f5dc;
-            --black-ink: #111111;
+            /* Deeper, more luxurious colors */
+            --bg-dark-red: #4a0408; 
+            --bg-light-red: #7a0b14;
+            
+            /* Realistic Beige Paper Tones */
+            --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+            --beige-back: #d4c4b2;
+            --beige-left: #e3d5c5;
+            --beige-right: #dfcebc;
+            --beige-bottom: #eaddd0;
+            --beige-flap: #d8c7b5;
+            
+            --ink-black: #1a1a1a;
         }
 
         body {
@@ -22,127 +31,151 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: var(--dark-red);
-            font-family: 'Montserrat', sans-serif;
+            /* Moody vignette background */
+            background: radial-gradient(circle at center, var(--bg-light-red) 0%, var(--bg-dark-red) 100%);
+            font-family: 'Playfair Display', serif;
             overflow: hidden;
         }
 
-        /* --- ENVELOPE STRUCTURE --- */
+        /* --- ENVELOPE STRUCTURE (Larger, more realistic) --- */
         .envelope-wrapper {
             position: relative;
-            width: 450px;
-            height: 300px;
+            width: 90vw;
+            max-width: 650px;
+            height: 420px;
+            perspective: 2000px; /* Gives 3D depth to the flap */
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.5));
+        }
+
+        /* Common paper class to apply texture */
+        .paper {
+            position: absolute;
+            background-image: var(--paper-texture);
+            background-blend-mode: multiply;
         }
 
         .envelope-back {
-            position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--beige-dark);
-            border-radius: 5px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            background-color: var(--beige-back);
+            border-radius: 4px;
         }
 
         .top-left-text {
             position: absolute;
             top: 20px;
-            left: 25px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: var(--black-ink);
+            left: 30px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--ink-black);
             z-index: 10;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.4);
+            pointer-events: none;
         }
 
         /* --- THE CARD INSIDE --- */
         .card {
             position: absolute;
-            bottom: 10px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 410px;
-            height: 270px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            height: 350px;
+            background-color: #faf7f2;
+            background-image: var(--paper-texture);
+            border-radius: 6px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 20px;
+            padding: 40px;
             box-sizing: border-box;
             z-index: 2;
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .card.slide-up {
-            transform: translate(-50%, -160px);
+            transform: translate(-50%, -220px);
             z-index: 4;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .card h1 {
-            color: var(--dark-red);
-            font-size: 1.8rem;
-            margin: 0 0 10px 0;
-            letter-spacing: 1px;
+            font-family: 'Cinzel', serif;
+            color: var(--bg-dark-red);
+            font-size: 2.2rem;
+            margin: 0 0 15px 0;
+            letter-spacing: 2px;
         }
 
         .card p {
             color: #333;
-            font-size: 1rem;
-            line-height: 1.5;
-            margin: 0 0 25px 0;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin: 0 0 35px 0;
+            font-style: italic;
         }
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             width: 100%;
             justify-content: center;
         }
 
         .card-btn {
-            background-color: var(--dark-red);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
+            background-color: transparent;
+            color: var(--bg-dark-red);
+            border: 1px solid var(--bg-dark-red);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
             font-weight: 600;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
+            transition: all 0.3s ease;
+            text-transform: lowercase;
         }
 
         .card-btn:hover {
-            transform: scale(1.05);
-            background-color: #8b0a1a;
+            background-color: var(--bg-dark-red);
+            color: white;
+            box-shadow: 0 5px 15px rgba(122, 11, 20, 0.3);
+            transform: translateY(-2px);
         }
 
-        /* --- ENVELOPE FRONT FLAPS --- */
-        .envelope-front {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 225px solid var(--beige-light);
-            border-right: 225px solid var(--beige-light);
-            border-bottom: 150px solid var(--beige-light);
-            border-top: 150px solid transparent;
-            z-index: 3;
-            pointer-events: none;
+        /* --- ENVELOPE FRONT FLAPS (Using Clip-Path for Realism) --- */
+        .envelope-left {
+            top: 0; left: 0; width: 50%; height: 100%;
+            background-color: var(--beige-left);
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            z-index: 3; pointer-events: none;
+        }
+
+        .envelope-right {
+            top: 0; right: 0; width: 50%; height: 100%;
+            background-color: var(--beige-right);
+            clip-path: polygon(100% 0, 0 50%, 100% 100%);
+            z-index: 3; pointer-events: none;
+        }
+
+        .envelope-bottom {
+            bottom: 0; left: 0; width: 100%; height: 60%;
+            background-color: var(--beige-bottom);
+            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+            z-index: 4; pointer-events: none;
         }
 
         /* Top triangle flap */
         .envelope-flap {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 225px solid transparent;
-            border-right: 225px solid transparent;
-            border-top: 160px solid var(--beige-dark);
+            top: 0; left: 0; width: 100%; height: 60%;
+            background-color: var(--beige-flap);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform-origin: top;
-            transition: transform 0.6s ease-in-out;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 5;
-            pointer-events: none;
         }
 
         .envelope-flap.open {
@@ -153,7 +186,7 @@
         /* --- THE BINARY HEART SEAL --- */
         .seal-container {
             position: absolute;
-            bottom: -30px; /* Positions it at the tip of the flap */
+            bottom: 15%; /* Positioned on the tip of the flap */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -161,16 +194,19 @@
             align-items: center;
             z-index: 6;
             cursor: pointer;
-            transition: opacity 0.3s;
-            pointer-events: auto;
+            transition: opacity 0.4s ease, transform 0.3s;
+        }
+        
+        .seal-container:hover {
+            transform: translateX(-50%) scale(1.05);
         }
 
         /* Masking raw text to form a perfect heart shape */
         .binary-heart {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             background-color: transparent;
-            color: var(--dark-red); /* Same color as background */
+            color: var(--bg-dark-red); /* Same as background */
             font-size: 8px;
             line-height: 7px;
             font-weight: bold;
@@ -178,6 +214,8 @@
             overflow: hidden;
             word-wrap: break-word;
             text-align: center;
+            /* Drop shadow gives the binary text a wax-seal depth */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
             /* Heart SVG Mask */
             -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
             -webkit-mask-size: cover;
@@ -185,13 +223,14 @@
         }
 
         .instruction {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: var(--black-ink);
-            font-weight: 600;
-            background: rgba(255,255,255,0.4);
-            padding: 2px 8px;
-            border-radius: 10px;
+            margin-top: 15px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--ink-black);
+            letter-spacing: 1px;
+            opacity: 0.8;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
+            animation: pulse 2s infinite;
         }
 
         /* --- THE LETTER MODAL (BEIGE PAPER) --- */
@@ -199,81 +238,95 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
             z-index: 100;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.4s;
+            animation: fadeIn 0.5s ease;
         }
 
         .paper-content {
-            background-color: var(--beige-paper);
-            width: 80%;
-            max-width: 600px;
-            max-height: 80vh;
-            padding: 40px;
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background-color: #fdfbf7;
+            background-image: var(--paper-texture);
+            width: 85%;
+            max-width: 700px;
+            max-height: 85vh;
+            padding: 60px 50px;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             overflow-y: auto;
             position: relative;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            line-height: 1.6;
-            color: var(--black-ink);
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            line-height: 1.5;
+            color: var(--ink-black);
         }
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
+            top: 20px;
+            right: 30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
             cursor: pointer;
-            color: #555;
-            font-weight: bold;
+            color: #888;
+            transition: color 0.3s;
         }
+
+        .close-btn:hover { color: var(--bg-dark-red); }
 
         /* --- FLOATING KISSES --- */
         .kiss-emoji {
             position: fixed;
-            font-size: 3rem;
+            font-size: 4rem;
             pointer-events: none;
             z-index: 999;
-            animation: floatKiss 2s ease-out forwards;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+            animation: floatKiss 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
         @keyframes floatKiss {
-            0% { transform: scale(0.5) translateY(0); opacity: 1; }
-            50% { transform: scale(1.5) translateY(-50px); opacity: 1; }
-            100% { transform: scale(2) translateY(-150px); opacity: 0; }
+            0% { transform: scale(0.2) translateY(0) rotate(-15deg); opacity: 0; }
+            20% { transform: scale(1.2) translateY(-20px) rotate(10deg); opacity: 1; }
+            80% { transform: scale(1) translateY(-100px) rotate(-5deg); opacity: 0.8; }
+            100% { transform: scale(1.5) translateY(-150px) rotate(15deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
     <div class="envelope-wrapper">
-        <div class="envelope-back"></div>
-        <div class="top-left-text">Για τον Θέμη</div>
+        <div class="paper envelope-back"></div>
         
         <div class="card" id="birthday-card">
             <h1>ΧΡΟΝΙΑ ΠΟΛΛΑ ΘΕΜΗ</h1>
-            <p>Σου εύχομαι να περάσεις πολύ όμορφα τα γενέθλια σου, σ'αγαπω και μου λείπεις πάρα πολύ.</p>
+            <p>Σου εύχομαι να περάσεις πολύ όμορφα τα γενέθλια σου,<br>σ'αγαπω και μου λείπεις πάρα πολύ.</p>
             <div class="button-group">
                 <button class="card-btn" onclick="openLetter()">read your letter (when you are ready)</button>
                 <button class="card-btn" onclick="spawnKiss()">click for a kiss</button>
             </div>
         </div>
 
-        <div class="envelope-front"></div>
+        <div class="paper envelope-left"></div>
+        <div class="paper envelope-right"></div>
+        <div class="paper envelope-bottom"></div>
         
-        <div class="envelope-flap" id="flap">
+        <div class="paper envelope-flap" id="flap">
             <div class="seal-container" id="seal" onclick="openEnvelope()">
                 <div class="binary-heart" id="binary-heart"></div>
                 <div class="instruction">click the heart to open the letter</div>
             </div>
         </div>
+        
+        <div class="top-left-text">Για τον Θέμη</div>
     </div>
 
     <div class="letter-modal" id="letter-modal">
@@ -282,8 +335,7 @@
             
             Αγαπημένε μου Θέμη,<br><br>
             
-            Εδώ γράφεις όλο το μακροσκελές μήνυμα που θέλεις να του πεις. 
-            Μπορείς να προσθέσεις όσες παραγράφους θέλεις.<br><br>
+            Εδώ γράφεις το όμορφο, μακροσκελές μήνυμά σου. Η γραμματοσειρά είναι πλέον πολύ πιο αληθοφανής και κομψή.<br><br>
             
             Σ' αγαπώ πολύ!
             
@@ -291,32 +343,32 @@
     </div>
 
     <script>
-        // Fill the heart with 010101s dynamically so we have enough text
+        // Fill the heart with 010101s dynamically
         const heartEl = document.getElementById('binary-heart');
-        heartEl.innerText = "01".repeat(500); // 1000 binary numbers packed tightly
+        heartEl.innerText = "01".repeat(800); 
 
         function openEnvelope() {
             const flap = document.getElementById('flap');
             const seal = document.getElementById('seal');
             const card = document.getElementById('birthday-card');
 
-            // 1. Hide the heart and text
+            // 1. Hide the seal smoothly
             seal.style.opacity = '0';
-            setTimeout(() => seal.style.display = 'none', 300);
+            setTimeout(() => seal.style.display = 'none', 400);
 
-            // 2. Open the flap
+            // 2. Open the flap with a realistic 3D swing
             flap.classList.add('open');
 
             // 3. Slide the card up and pop confetti
             setTimeout(() => {
                 card.classList.add('slide-up');
                 fireConfetti();
-            }, 500);
+            }, 700);
         }
 
         function fireConfetti() {
-            const count = 200;
-            const defaults = { origin: { y: 0.6 }, shapes: ['heart'], colors: ['#6a040f', '#ff4d6d', '#ffffff'] };
+            const count = 250;
+            const defaults = { origin: { y: 0.7 }, shapes: ['heart'], colors: ['#7a0b14', '#4a0408', '#d4c4b2'] };
 
             function fire(particleRatio, opts) {
                 confetti(Object.assign({}, defaults, opts, {
@@ -332,22 +384,21 @@
         }
 
         function spawnKiss() {
-            // Create a kiss emoji
             const kiss = document.createElement('div');
             kiss.className = 'kiss-emoji';
             kiss.innerText = '💋';
             
-            // Generate completely random X and Y coordinates across the whole screen
-            const randomX = Math.random() * (window.innerWidth - 50); // -50 so it doesn't go off-screen
-            const randomY = Math.random() * (window.innerHeight - 50);
+            // Generate random X and Y coordinates with padding so it stays on screen
+            const randomX = Math.random() * (window.innerWidth - 100) + 50; 
+            const randomY = Math.random() * (window.innerHeight - 100) + 50;
             
             kiss.style.left = randomX + 'px';
             kiss.style.top = randomY + 'px';
             
             document.body.appendChild(kiss);
 
-            // Remove it from the HTML after the animation finishes so it doesn't lag his phone/computer
-            setTimeout(() => kiss.remove(), 2000);
+            // Remove after animation finishes
+            setTimeout(() => kiss.remove(), 2500);
         }
 
         function openLetter() {
